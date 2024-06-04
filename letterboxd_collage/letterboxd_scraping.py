@@ -28,17 +28,20 @@ def fetch_data(username: str):
         tbody = diary_table.find('tbody')
         rows = tbody.find_all('tr')
         movies = []
-        for row in rows:
+        for row in rows[1:10]:
             film_details_element = row.find(class_='td-film-details')
             rating_element = row.find(class_='td-rating rating-green')
             film_elements = film_details_element.find(
                 attrs={'data-film-id': True})
+            film_poster = film_elements.find(class_='image')
+            link_poster = film_poster.get('src')
+            link_poster_full = link_poster.replace('0-35-0-52', '0-1000-0-1500')
             film_data = {
                 'id': film_elements.get('data-film-id'),
                 'slug': film_elements.get('data-film-slug'),
                 'name': film_details_element.find('a').get_text(strip=True),
                 'rating': rating_element.get_text(strip=True) if rating_element is not None else '',
-                'link-poster': f'https://letterboxd.com/ajax/poster/film/{film_elements.get("data-film-slug")}/hero/150x225/',
+                'link-poster': link_poster_full,
             }
             movies.append(film_data)
     finally:
