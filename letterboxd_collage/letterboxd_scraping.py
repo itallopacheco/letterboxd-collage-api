@@ -5,22 +5,10 @@ from selenium.webdriver import ChromeOptions
 from seleniumrequests import Remote
 
 
-SELENIUM_OPTIONS = {
-    'REMOTE_SELENIUM_ADDRESS': 'http://localhost:4444/wd/hub',
-    'SELENIUM_REQUESTS_PROXY_HOST': '192.168.101.2'
-}
 
 
-
-
-
-def fetch_data(username: str):
+def fetch_data(username: str, driver: Remote):
     options = ChromeOptions()
-    driver = Remote(
-        command_executor=SELENIUM_OPTIONS['REMOTE_SELENIUM_ADDRESS'],
-        options=options,
-        proxy_host=SELENIUM_OPTIONS['SELENIUM_REQUESTS_PROXY_HOST']
-    )
     driver.get(f'https://letterboxd.com/{username}/films/diary/')
 
     page_source = driver.page_source
@@ -43,5 +31,4 @@ def fetch_data(username: str):
         }
         movies.append(film_data)
 
-    driver.quit()
     return movies
