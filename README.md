@@ -1,0 +1,1 @@
+docker build --build-arg REMOTE_SELENIUM_ADDRESS=<endereco> --build-arg SELENIUM_REQUESTS_PROXY_HOST=<endereco> -t letterboxd-collage .
