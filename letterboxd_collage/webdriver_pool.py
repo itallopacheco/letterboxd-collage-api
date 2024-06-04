@@ -1,10 +1,12 @@
+import os
+
 from selenium.webdriver import ChromeOptions
 from seleniumrequests import Remote
 from queue import Queue
 
 SELENIUM_OPTIONS = {
-    'REMOTE_SELENIUM_ADDRESS': 'http://localhost:4444/wd/hub',
-    'SELENIUM_REQUESTS_PROXY_HOST': '192.168.101.2'
+    'REMOTE_SELENIUM_ADDRESS': os.getenv('REMOTE_SELENIUM_ADDRESS', 'http://localhost:4444/wd/hub'),
+    'SELENIUM_REQUESTS_PROXY_HOST': os.getenv('SELENIUM_REQUESTS_PROXY_HOST', '192.168.101.2')
 }
 
 
