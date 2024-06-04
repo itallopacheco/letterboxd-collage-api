@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "letterboxd-collage"
+version = "0.1.0"
+description = ""
+authors = ["itallopacheco <itallo.santos@lais.huol.ufrn.br>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11.9"
+fastapi = "^0.111.0"
+bs4 = "^0.0.2"
+selenium-requests = "^2.0.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
