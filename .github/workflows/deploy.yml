@@ -20,4 +20,4 @@ jobs:
         REMOTE_HOST: ${{secrets.REMOTE_HOST}}
         REMOTE_USER: ${{secrets.REMOTE_USER}}
         TARGET: ${{secrets.TARGET_DIR}}
-        EXCLUDE: "/dist/, /node_modules/, **.env, rebuild_app.sh, watcher.sh"
+        EXCLUDE: "/dist/, /node_modules/, **.env, rebuild_app.sh, watcher.sh, docker-compose.yml, Dockerfile"
