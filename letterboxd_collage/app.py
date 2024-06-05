@@ -24,9 +24,17 @@ def fetch_letterboxd_data(username: str):
     return fetch_data(username)
 
 
-@app.get("/proxy-image/{url}")
-async def proxy_image(url: str):
-    async with httpx.AsyncClient() as client:
-        response = await client.get(url)
+@app.get("/fetch/{url}")
+def test_fethc_img(url: str):
+    with httpx.Client() as client:
+        response = client.get(url)
         return Response(response.content, media_type=response.headers['Content-Type'])
 
+
+@app.get("/proxy-image/{url:path}")
+async def proxy_image(url: str):
+    if not url.startswith('https://'):
+        url = f"https://{url}"
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url)
+        return Response(response.content, media_type=response.headers["Content-Type"])
