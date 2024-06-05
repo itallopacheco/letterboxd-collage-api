@@ -15,7 +15,7 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    return {"Health": "OK"}
+    return {"Health": "OK TESTE CD"}
 
 
 @app.get("/collage/{username}")
