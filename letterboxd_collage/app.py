@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+import httpx
+from fastapi import FastAPI, Response
 from .letterboxd_scraping import fetch_data
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -21,3 +22,11 @@ def read_root():
 @app.get("/collage/{username}")
 def fetch_letterboxd_data(username: str):
     return fetch_data(username)
+
+
+@app.get("/proxy-image/{url}")
+async def proxy_image(url: str):
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url)
+        return Response(response.content, media_type=response.headers['Content-Type'])
+
