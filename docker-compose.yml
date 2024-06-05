@@ -3,7 +3,6 @@ version: '3'
 services:
   letterboxd_collage:
     image: letterboxd_collage
-    entrypoint: ./entrypoint.sh
     build:
       context: .
       dockerfile: Dockerfile
