@@ -2,7 +2,6 @@ version: '3'
 
 services:
   letterboxd_collage:
-    image: letterboxd_collage
     build:
       context: .
       dockerfile: Dockerfile
@@ -11,3 +10,6 @@ services:
     environment:
       REMOTE_SELENIUM_ADDRESS: "http://selenium:4444/wd/hub"
       SELENIUM_REQUESTS_PROXY_HOST: "192.168.101.2"
+    volumes:
+      - .:/app
+    command: poetry run uvicorn --host 0.0.0.0 --reload letterboxd_collage.app:app
