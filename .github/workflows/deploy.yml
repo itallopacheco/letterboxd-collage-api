@@ -13,7 +13,7 @@ jobs:
 
     - name: Copy files with SSH
       uses: easingthemes/ssh-deploy@main
-      env:
+      with:
         SSH_PRIVATE_KEY: ${{secrets.EC2_SSH_KEY}}
         ARGS: "-rltgoDzvO --delete"
         SOURCE: "./"
@@ -21,3 +21,4 @@ jobs:
         REMOTE_USER: ${{secrets.REMOTE_USER}}
         TARGET: ${{secrets.TARGET_DIR}}
         EXCLUDE: "/dist/, /node_modules/, **.env, rebuild_app.sh, watcher.sh, docker-compose.yml, Dockerfile, __pycache/__"
+        SCRIPT_AFTER: rm -rf /home/ubuntu/api/letterboxd_collage/__pycache__/
