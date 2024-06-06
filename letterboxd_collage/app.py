@@ -1,14 +1,18 @@
+import os.path
 from io import BytesIO
 
 import httpx
-from fastapi.responses import StreamingResponse
-from fastapi import FastAPI, Response
+from fastapi.responses import StreamingResponse, HTMLResponse
+from fastapi import FastAPI, Response, Request, Form
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from .letterboxd_scraping import fetch_data, create_movie_grid
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-
+templates = Jinja2Templates(directory="templates")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.add_middleware(
     CORSMiddleware,
@@ -19,27 +23,20 @@ app.add_middleware(
 )
 
 
-@app.get("/")
-def read_root():
-    return {"Health": "OK"}
+@app.get("/", response_class=HTMLResponse)
+def index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
-@app.get("/collage/{username}")
-async def fetch_letterboxd_data(username: str):
+@app.post("/collage")
+async def fetch_letterboxd_data(username: str = Form(...)):
     data = await fetch_data(username)
     grid = create_movie_grid(data, 4, 3)
 
-    img_io = BytesIO()
-    grid.save(img_io, 'JPEG')
-    img_io.seek(0)
+    filename = f"{username}_collage.jpg"
+    filepath = os.path.join("static", filename)
+    grid.save(filepath)
 
-    return StreamingResponse(img_io, media_type="image/jpeg")
+    url = f"/static/{filename}"
 
-
-@app.get("/proxy-image/{url:path}")
-async def proxy_image(url: str):
-    if not url.startswith('https://'):
-        url = f"https://{url}"
-    async with httpx.AsyncClient() as client:
-        response = await client.get(url)
-        return Response(response.content, media_type=response.headers["Content-Type"])
+    return HTMLResponse(f'<img src="{url}" alt="Result">')

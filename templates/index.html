@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ltrbxd collage</title>
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+    <style>
+        .loading {
+            display: none;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .loading.visible {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+    <form hx-post="/collage" hx-trigger="submit" hx-swap="outerHTML" hx-target="#imageResult" hx-indicator="#loadingIndicator">
+        <input type="text" name="username" placeholder="Enter username">
+        <button type="submit">Submit</button>
+    </form>
+    <div id="imageResult"></div>
+    <div id="loadingIndicator" class="loading">Loading...</div>
+
+    <script>
+        document.addEventListener("htmx:configRequest", function(evt) {
+            document.getElementById('loadingIndicator').classList.add('visible');
+        });
+
+        document.addEventListener("htmx:afterRequest", function(evt) {
+            document.getElementById('loadingIndicator').classList.remove('visible');
+        });
+    </script>
+</body>
+</html>

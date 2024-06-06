@@ -88,5 +88,4 @@ def create_movie_grid(fetch_data, n, m):
 
         if i >= n * m - 1:
             break
-    grid.save(f"collage_{time.time()}.jpg")
     return grid
