@@ -21,4 +21,4 @@ jobs:
         REMOTE_USER: ${{secrets.REMOTE_USER}}
         TARGET: ${{secrets.TARGET_DIR}}
         EXCLUDE: "/dist/, /node_modules/, **.env, rebuild_app.sh, watcher.sh, docker-compose.yml, Dockerfile, __pycache/__"
-        SCRIPT_AFTER: rm -rf /home/ubuntu/api/letterboxd_collage/__pycache__/
+        SCRIPT_BEFORE: rm -rf /home/ubuntu/api/letterboxd_collage/__pycache__/
