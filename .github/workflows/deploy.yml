@@ -22,3 +22,4 @@ jobs:
         TARGET: ${{secrets.TARGET_DIR}}
         EXCLUDE: "/dist/, /node_modules/, **.env, rebuild_app.sh, watcher.sh, docker-compose.yml, Dockerfile, __pycache/__"
         SCRIPT_BEFORE: sudo rm -rf /home/ubuntu/api/letterboxd_collage/__pycache__/
+        SCRIPT_AFTER: mkdir /home/ubuntu/api/static
