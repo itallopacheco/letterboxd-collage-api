@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 
 def format_rating(rating: str):
     scoreToTextMap = {
+        "-1": "",
         "0.5": "½",
         "1.0": "★",
         "1.5": "★½",
@@ -34,9 +35,13 @@ async def fetch_data(username: str):
         movies = []
         for item in items:
             if item.find("tmdb:movieId") is not None:
+                try:
+                    rating = item.find("letterboxd:memberRating").text
+                except AttributeError:
+                    rating = '-1'
                 movie = {
                     "title": item.find("letterboxd:filmTitle").text,
-                    "rating": format_rating(item.find("letterboxd:memberRating").text),
+                    "rating": format_rating(rating),
                     "rewatch": item.find("letterboxd:rewatch").text,
                     "poster_medium": BeautifulSoup(item.find("description").text).find("img")["src"].replace(
                         '-0-600-0-900-crop', '-0-230-0-345-crop'),
