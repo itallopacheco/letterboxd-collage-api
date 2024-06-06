@@ -1,9 +1,14 @@
+from io import BytesIO
+
 import httpx
+from fastapi.responses import StreamingResponse
 from fastapi import FastAPI, Response
-from .letterboxd_scraping import fetch_data
+from .letterboxd_scraping import fetch_data, create_movie_grid
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -20,15 +25,15 @@ def read_root():
 
 
 @app.get("/collage/{username}")
-def fetch_letterboxd_data(username: str):
-    return fetch_data(username)
+async def fetch_letterboxd_data(username: str):
+    data = await fetch_data(username)
+    grid = create_movie_grid(data, 4, 3)
 
+    img_io = BytesIO()
+    grid.save(img_io, 'JPEG')
+    img_io.seek(0)
 
-@app.get("/fetch/{url}")
-def test_fethc_img(url: str):
-    with httpx.Client() as client:
-        response = client.get(url)
-        return Response(response.content, media_type=response.headers['Content-Type'])
+    return StreamingResponse(img_io, media_type="image/jpeg")
 
 
 @app.get("/proxy-image/{url:path}")
