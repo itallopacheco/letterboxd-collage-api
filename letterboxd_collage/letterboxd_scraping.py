@@ -1,7 +1,5 @@
-from io import BytesIO
-
-import time
 from concurrent.futures import ThreadPoolExecutor
+from io import BytesIO
 
 import httpx
 import requests

@@ -1,13 +1,12 @@
 import os.path
-from io import BytesIO
 
-import httpx
-from fastapi.responses import StreamingResponse, HTMLResponse
-from fastapi import FastAPI, Response, Request, Form
+from fastapi import FastAPI, Request, Form
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+
 from .letterboxd_scraping import fetch_data, create_movie_grid
-from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
