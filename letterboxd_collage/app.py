@@ -30,12 +30,14 @@ def index(request: Request):
 @app.post("/collage")
 async def fetch_letterboxd_data(username: str = Form(...)):
     data = await fetch_data(username)
-    grid = create_movie_grid(data, 4, 3)
+    if data is not None:
+        grid = create_movie_grid(data, 4, 3)
 
-    filename = f"{username}_collage.jpg"
-    filepath = os.path.join("static", filename)
-    grid.save(filepath)
+        filename = f"{username}_collage.jpg"
+        filepath = os.path.join("static", filename)
+        grid.save(filepath)
 
-    url = f"/static/{filename}"
-
+        url = f"/static/{filename}"
+    else:
+        return HTMLResponse("<h1>Invalid username</h1>")
     return HTMLResponse(f'<img src="{url}" alt="Result">')
