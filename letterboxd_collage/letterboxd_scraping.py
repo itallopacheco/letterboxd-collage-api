@@ -7,6 +7,11 @@ from PIL import Image, ImageDraw, ImageFont
 from bs4 import BeautifulSoup
 
 
+def check_user(username: str):
+    url = f"https://letterboxd.com/{username}/rss/"
+    response = requests.get(url)
+    return response.status_code == 200
+
 def format_rating(rating: str):
     scoreToTextMap = {
         "-1": "",
@@ -27,8 +32,10 @@ def format_rating(rating: str):
 async def fetch_data(username: str):
     url = f"https://letterboxd.com/{username}/rss/"
     async with httpx.AsyncClient() as client:
-        response = await client.get(url)
-
+        if check_user(username):
+            response = await client.get(url)
+        else :
+            return None
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, "xml")
         items = soup.find_all("item")
